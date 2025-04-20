@@ -18,12 +18,17 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
     scrollToBottom();
   }, [messages]);
 
+  // Check if there's already a streaming message
+  const hasStreamingMessage = messages.some(
+    (message) => message.content.isStreaming
+  );
+
   return (
     <div className="space-y-4 mb-4 overflow-y-auto">
       {messages.map((message, index) => (
-        <MessageComponent key={index} message={message} />
+        <MessageComponent key={message.id || index} message={message} />
       ))}
-      {isLoading && (
+      {isLoading && !hasStreamingMessage && (
         <div className="flex justify-start">
           <div className="inline-block p-3 rounded-lg bg-white text-black text-sm">
             <div className="flex gap-2">
