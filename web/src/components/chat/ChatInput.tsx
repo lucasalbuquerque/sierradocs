@@ -12,7 +12,7 @@ export function ChatInput({
   isLoading,
 }: ChatInputProps) {
   return (
-    <div className="border rounded-lg border-gray-800 p-4 fixed bottom-5 left-0 right-0 max-w-4xl mx-auto">
+    <div className="rounded-lg border-stone-900 border p-4 fixed bottom-5 left-0 right-0 max-w-4xl mx-auto">
       <div className="flex items-center gap-2">
         <button className="rounded-lg p-2 text-gray-300 hover:bg-gray-900 cursor-pointer">
           <svg
@@ -36,7 +36,7 @@ export function ChatInput({
             onChange={(e) => onChange(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && onSend()}
             placeholder="Type your message..."
-            className="w-full rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-1 focus:ring-gray-900"
+            className="w-full rounded-lg px-4 py-2 text-white focus:outline-none"
             disabled={isLoading}
           />
         </div>

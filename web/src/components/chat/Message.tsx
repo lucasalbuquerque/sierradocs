@@ -14,7 +14,7 @@ export function Message({ message }: MessageProps) {
       <div
         className={`inline-block p-3 rounded-lg max-w-[80%] text-sm ${
           message.role === "user"
-            ? "border border-gray-800 text-white"
+            ? "border border-stone-900 text-white"
             : "bg-white text-black"
         }`}
       >
