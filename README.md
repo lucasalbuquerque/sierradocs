@@ -4,10 +4,10 @@ SierraDocs is an enterprise-grade document intelligence platform that helps mode
 
 ## Project Structure
 
-This is a monorepo containing two main components:
+This is a monorepo containing two main components. Please refer to each component's README for detailed setup instructions and documentation:
 
-- [`/web`](./web/README.md) - Frontend application built with Next.js
-- [`/backend`](./backend/README.md) - Backend API service
+- [`/web`](./web/README.md) - Frontend application built with [Next.js](https://nextjs.org) ⚡
+- [`/backend`](./backend/README.md) - Backend API service built with [Nest.js](https://nestjs.com) 🪽
 
 ## System Design
 
@@ -78,7 +78,7 @@ You can access:
 
 - Frontend application at http://localhost:3000
 - Backend API at http://localhost:4000
-- PostgreSQL database at localhost:5432
+- PostgreSQL database at localhost:5432 (**username: postgres, password: postgres**)
 
 ### Available Commands
 
