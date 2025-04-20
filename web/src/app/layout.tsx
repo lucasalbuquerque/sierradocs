@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Libre_Baskerville } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/layout/Header";
 
 const libreBaskerville = Libre_Baskerville({
   subsets: ["latin"],
@@ -21,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${libreBaskerville.className}`}>{children}</body>
+      <body className={`${libreBaskerville.className}`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
