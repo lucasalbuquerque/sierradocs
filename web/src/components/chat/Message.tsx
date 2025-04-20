@@ -62,11 +62,6 @@ export function Message({ message }: MessageProps) {
                 )}
               </div>
             )}
-            {message.content.documentName && (
-              <div className="mt-2 text-xs text-gray-500">
-                Source: {message.content.documentName}
-              </div>
-            )}
           </div>
 
           {isUser && (
