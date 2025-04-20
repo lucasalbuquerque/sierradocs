@@ -1,5 +1,4 @@
-import Link from "next/link";
-import Image from "next/image";
+import Button from "./Button";
 
 export default function Hero() {
   return (
@@ -14,9 +13,7 @@ export default function Hero() {
         and intelligent content analysis. Enhance productivity across your
         enterprise with SierraDocs.
       </p>
-      <Link href="/upload" className="bg-white text-black px-6 py-4 rounded-md">
-        Get Started
-      </Link>
+      <Button href="/upload">Get Started</Button>
     </div>
   );
 }
