@@ -19,7 +19,7 @@ export default function AIAssistantPage() {
     <div className="container mx-auto mt-20">
       <div className="flex flex-col gap-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
             How can I help you today?
           </h1>
           <p className="text-gray-400 text-sm">
