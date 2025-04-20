@@ -5,9 +5,11 @@ export interface MessageContent {
   text: string;
   documentName?: string;
   documentId?: string;
+  isStreaming?: boolean;
 }
 
 export interface Message {
+  id?: string;
   content: MessageContent;
 }
 
