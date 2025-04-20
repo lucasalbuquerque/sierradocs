@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Document } from './entities/document.entity';
 import { OpenAI } from 'openai';
+import { Response } from 'express';
 
 export interface AISearchResult {
   documentId: string;
@@ -146,6 +147,96 @@ export class AIAssistantService {
     } catch (error) {
       console.error('Answer generation error:', error);
       throw new Error(`Failed to generate answer: ${error.message}`);
+    }
+  }
+
+  /**
+   * Stream the answer to a question using SSE
+   */
+  async streamAnswerQuestion(query: string, res: Response): Promise<void> {
+    try {
+      // Set headers for SSE
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+
+      // First, search for relevant documents
+      res.write(
+        'data: {"type":"status","content":"Searching for relevant documents..."}\n\n',
+      );
+
+      const searchResults = await this.semanticSearch(query, 3);
+
+      if (searchResults.length === 0) {
+        res.write(
+          'data: {"type":"answer","documentId":"","documentName":"","content":"","score":0,"answer":"I couldn\'t find any relevant information to answer your question."}\n\n',
+        );
+        res.end();
+        return;
+      }
+
+      // Send document results to the client
+      res.write(
+        `data: {"type":"documents","documents":${JSON.stringify(
+          searchResults,
+        )}}\n\n`,
+      );
+      res.write('data: {"type":"status","content":"Generating answer..."}\n\n');
+
+      // Create context from the search results
+      const context = searchResults
+        .map((result) => `Document: ${result.documentName}\n${result.content}`)
+        .join('\n\n');
+
+      // Generate a streaming answer using OpenAI
+      const stream = await this.openai.chat.completions.create({
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content:
+              "You are a helpful assistant that answers questions based on the provided document content. Answer concisely using only information from the documents. If the information is not in the documents, say you don't know.",
+          },
+          {
+            role: 'user',
+            content: `Based on the following document content, please answer this question: "${query}"\n\nDocuments:\n${context}`,
+          },
+        ],
+        temperature: 0.3,
+        max_tokens: 500,
+        stream: true,
+      });
+
+      let fullAnswer = '';
+
+      // Stream each chunk of the answer to the client
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || '';
+        if (content) {
+          fullAnswer += content;
+          res.write(
+            `data: {"type":"chunk","content":${JSON.stringify(content)}}\n\n`,
+          );
+        }
+      }
+
+      // Send the complete answer with document information
+      const finalResult = {
+        type: 'complete',
+        result: {
+          ...searchResults[0],
+          answer: fullAnswer,
+        },
+      };
+
+      res.write(`data: ${JSON.stringify(finalResult)}\n\n`);
+      res.end();
+    } catch (error) {
+      console.error('Stream answer generation error:', error);
+      res.write(
+        `data: {"type":"error","message":"Error generating answer: ${error.message}"}\n\n`,
+      );
+      res.end();
     }
   }
 }
