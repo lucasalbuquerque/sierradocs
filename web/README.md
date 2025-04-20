@@ -20,8 +20,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Todo
 
-## Todo
-
 - [ ] Implement comprehensive unit testing with Jest
 - [ ] Set up CI/CD pipeline with GitHub Actions
 - [ ] Set up logging service
