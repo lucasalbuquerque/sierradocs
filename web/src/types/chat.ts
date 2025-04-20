@@ -1,8 +1,14 @@
 export type MessageRole = "user" | "assistant";
 
-export interface Message {
+export interface MessageContent {
   role: MessageRole;
-  content: string;
+  text: string;
+  documentName?: string;
+  documentId?: string;
+}
+
+export interface Message {
+  content: MessageContent;
 }
 
 export interface ChatState {
