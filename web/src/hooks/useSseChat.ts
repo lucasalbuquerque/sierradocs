@@ -71,9 +71,7 @@ export function useSseChat() {
         // Create SSE connection
         const encodedQuery = encodeURIComponent(content);
         const sse = new EventSource(
-          `${
-            process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
-          }/documents/ask/stream?query=${encodedQuery}`
+          `${process.env.NEXT_PUBLIC_API_URL}/documents/ask/stream?query=${encodedQuery}`
         );
         setEventSource(sse);
 
