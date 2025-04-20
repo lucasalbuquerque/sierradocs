@@ -41,12 +41,27 @@ export function Message({ message }: MessageProps) {
           )}
 
           <div className="flex-1">
-            <div className="whitespace-pre-wrap">
-              {message.content.text}
-              {isStreaming && showCursor && (
-                <span className="inline-block w-2 h-4 bg-black ml-0.5 animate-pulse"></span>
-              )}
-            </div>
+            {!isUser && isStreaming && !message.content.text && (
+              <div className="flex items-center space-x-2 py-2">
+                <div className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"></div>
+                <div
+                  className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"
+                  style={{ animationDelay: "0.2s" }}
+                ></div>
+                <div
+                  className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"
+                  style={{ animationDelay: "0.4s" }}
+                ></div>
+              </div>
+            )}
+            {(!isStreaming || message.content.text) && (
+              <div className="whitespace-pre-wrap">
+                {message.content.text}
+                {isStreaming && showCursor && (
+                  <span className="inline-block w-2 h-4 bg-black ml-0.5 animate-pulse"></span>
+                )}
+              </div>
+            )}
             {message.content.documentName && (
               <div className="mt-2 text-xs text-gray-500">
                 Source: {message.content.documentName}
