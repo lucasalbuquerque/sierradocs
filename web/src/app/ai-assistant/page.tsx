@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useChat } from "@/hooks/useChat";
+import { useSseChat } from "@/hooks/useSseChat";
 import { MessageList } from "@/components/chat/MessageList";
 import { ChatInput } from "@/components/chat/ChatInput";
 
 export default function AIAssistantPage() {
   const [inputMessage, setInputMessage] = useState("");
-  const { messages, isLoading, error, sendMessage } = useChat();
+  const { messages, isLoading, error, sendMessage } = useSseChat();
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
