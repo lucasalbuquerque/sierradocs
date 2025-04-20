@@ -8,7 +8,7 @@ export default function Hero() {
           Enterprise-Grade Document Intelligence for Modern Businesses
         </h2>
         <p className="text-center text-sm md:text-base text-gray-300 w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl mt-4 md:mt-8">
-          Streamline your organization's document management with advanced
+          Streamline your organization&apos;s document management with advanced
           search capabilities and intelligent content analysis. Enhance
           productivity across your enterprise with SierraDocs.
         </p>
