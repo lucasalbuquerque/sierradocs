@@ -3,7 +3,7 @@ export interface Document {
   name: string;
   size: number;
   type: string;
-  uploadDate: Date;
+  createdAt: Date;
 }
 
 export interface DocumentState {

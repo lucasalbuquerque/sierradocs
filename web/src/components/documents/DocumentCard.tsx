@@ -15,7 +15,7 @@ export function DocumentCard({ document, onDelete }: DocumentCardProps) {
             {document.name}
           </h3>
           <div className="mt-1 flex items-center text-xs text-gray-500 space-x-2">
-            <span>{new Date(document.uploadDate).toLocaleDateString()}</span>
+            <span>{new Date(document.createdAt).toLocaleDateString()}</span>
             <span>•</span>
             <span>{(document.size / 1024).toFixed(1)} KB</span>
           </div>

@@ -1,18 +1,81 @@
 "use client";
 
-import { useDocuments } from "@/hooks/useDocuments";
+import { useState, useEffect } from "react";
 import { DocumentList } from "@/components/documents/DocumentList";
 import { DocumentUpload } from "@/components/documents/DocumentUpload";
 import { DocumentSearch } from "@/components/documents/DocumentSearch";
+import { Document } from "@/services/documents/types";
+import {
+  uploadDocuments,
+  deleteDocument,
+  searchDocuments,
+  listDocuments,
+} from "@/services/documents";
 
 export default function DocumentsPage() {
-  const {
-    filteredDocuments,
-    isSearching,
-    addDocuments,
-    deleteDocument,
-    searchDocuments,
-  } = useDocuments();
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchDocuments = async () => {
+    try {
+      setIsLoading(true);
+      const data = await listDocuments();
+      setDocuments(data ?? []);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+      setError("Failed to fetch documents");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  const handleUpload = async (files: File[]) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const newDocs = await uploadDocuments(files);
+      setDocuments((prev) => [...(prev ?? []), ...(newDocs ?? [])]);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to upload documents"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSearch = async (query: string) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const results = await searchDocuments(query);
+      setDocuments(results ?? []);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to search documents"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      setError(null);
+      await deleteDocument(id);
+      setDocuments((prev) => (prev ?? []).filter((doc) => doc?.id !== id));
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to delete document"
+      );
+    }
+  };
 
   return (
     <div className="container mx-auto mt-10">
@@ -27,17 +90,13 @@ export default function DocumentsPage() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <DocumentSearch
-                onSearch={searchDocuments}
-                isSearching={isSearching}
-              />
-              <DocumentUpload onDrop={addDocuments} />
+              <DocumentSearch onSearch={handleSearch} isSearching={isLoading} />
+              <DocumentUpload onDrop={handleUpload} />
             </div>
 
-            <DocumentList
-              documents={filteredDocuments}
-              onDelete={deleteDocument}
-            />
+            {error && <div className="text-red-500 text-sm">{error}</div>}
+
+            <DocumentList documents={documents} onDelete={handleDelete} />
           </div>
         </div>
       </div>

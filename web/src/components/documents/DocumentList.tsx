@@ -8,7 +8,7 @@ interface DocumentListProps {
 }
 
 export function DocumentList({ documents, onDelete }: DocumentListProps) {
-  if (documents.length === 0) {
+  if (!documents || !Array.isArray(documents) || documents.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow-sm p-12 text-center">
         <File className="mx-auto h-12 w-12 text-gray-300" />
@@ -23,9 +23,10 @@ export function DocumentList({ documents, onDelete }: DocumentListProps) {
   return (
     <div className="rounded-lg">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {documents.map((doc) => (
-          <DocumentCard key={doc.id} document={doc} onDelete={onDelete} />
-        ))}
+        {Array.isArray(documents) &&
+          documents.map((doc) => (
+            <DocumentCard key={doc.id} document={doc} onDelete={onDelete} />
+          ))}
       </div>
     </div>
   );
