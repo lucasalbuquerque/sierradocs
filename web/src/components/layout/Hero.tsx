@@ -13,7 +13,7 @@ export default function Hero() {
         and intelligent content analysis. Enhance productivity across your
         enterprise with SierraDocs.
       </p>
-      <Button href="/upload">Get Started</Button>
+      <Button href="/documents">Get Started</Button>
     </div>
   );
 }
