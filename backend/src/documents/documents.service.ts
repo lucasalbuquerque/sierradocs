@@ -89,14 +89,10 @@ export class DocumentsService {
         file,
       );
 
-      console.log('text', text);
-
       // Store vectors in Pinecone
       const vectors = await this.documentProcessingService.createEmbeddings(
         text,
       );
-
-      console.log('VECTORS', vectors);
 
       await this.pineconeService.upsertVectors(vectors);
 
