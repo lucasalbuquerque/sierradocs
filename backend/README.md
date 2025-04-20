@@ -278,11 +278,11 @@ npm run test:cov
 
 ## Todo
 
-- Implement comprehensive unit testing with Jest
-- Implement queue service using BullMQ for background job processing
-- Add API documentation using Swagger/OpenAPI
-- Set up CI/CD pipeline with GitHub Actions
-- Implement rate limiting for API endpoints
-- Implement caching layer with Redis
-- Set up logging service
-- Set up observability with Signoz/ELK Stack
+- [ ] Implement comprehensive unit testing with Jest
+- [ ] Implement queue service using BullMQ for background job processing
+- [ ] Add API documentation using Swagger/OpenAPI
+- [ ] Set up CI/CD pipeline with GitHub Actions
+- [ ] Implement rate limiting for API endpoints
+- [ ] Implement caching layer with Redis
+- [ ] Set up logging service
+- [ ] Set up observability with Signoz/ELK Stack
