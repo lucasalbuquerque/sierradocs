@@ -16,10 +16,7 @@ export default function Header() {
       <nav className="flex items-center">
         <ul className="flex gap-4">
           <li className="font-extralight text-white hover:text-gray-300 transition-colors duration-300">
-            <Link href="/upload">Upload</Link>
-          </li>
-          <li className="font-extralight text-white hover:text-gray-300 transition-colors duration-300">
-            <Link href="/search">Search</Link>
+            <Link href="/documents">Documents</Link>
           </li>
           <li className="font-extralight text-white hover:text-gray-300 transition-colors duration-300">
             <Link href="/ai-assistant">AI Assistant</Link>
