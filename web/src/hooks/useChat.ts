@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { Message, ChatState } from "@/types/chat";
+import api from "@/services/api";
 
 export function useChat() {
   const [chatState, setChatState] = useState<ChatState>({
@@ -16,30 +17,48 @@ export function useChat() {
         ...prev,
         isLoading: true,
         error: null,
-        messages: [...prev.messages, { role: "user", content }],
+        messages: [
+          ...prev.messages,
+          {
+            content: {
+              role: "user",
+              text: content,
+            },
+          },
+        ],
       }));
 
       try {
-        // TODO: Replace with actual API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Call backend AI assistant API
+        const response = await api.get("/documents/ask", {
+          params: { query: content },
+        });
+
+        // Create assistant message with response data
+        const assistantMessage: Message = {
+          content: {
+            role: "assistant",
+            text:
+              response.data.answer ||
+              "I couldn't find an answer to your question in the documents.",
+            documentName: response.data.documentName,
+            documentId: response.data.documentId,
+          },
+        };
 
         setChatState((prev) => ({
           ...prev,
           isLoading: false,
-          messages: [
-            ...prev.messages,
-            {
-              role: "assistant",
-              content:
-                "This is a placeholder response. The actual API integration will be implemented later.",
-            },
-          ],
+          messages: [...prev.messages, assistantMessage],
         }));
       } catch (error) {
         setChatState((prev) => ({
           ...prev,
           isLoading: false,
-          error: error instanceof Error ? error.message : "An error occurred",
+          error:
+            error instanceof Error
+              ? error.message
+              : "An error occurred while fetching the answer",
         }));
       }
     },
