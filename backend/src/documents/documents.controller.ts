@@ -8,11 +8,13 @@ import {
   UseInterceptors,
   UploadedFiles,
   BadRequestException,
+  Res,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { DocumentsService } from './documents.service';
 import { Document } from './entities/document.entity';
 import { AIAssistantService, AISearchResult } from './ai-assistant.service';
+import { Response } from 'express';
 
 @Controller('documents')
 export class DocumentsController {
@@ -60,6 +62,17 @@ export class DocumentsController {
       throw new BadRequestException('Question is required');
     }
     return this.aiAssistantService.answerQuestion(query);
+  }
+
+  @Get('ask/stream')
+  async streamQuestion(
+    @Query('query') query: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    if (!query) {
+      throw new BadRequestException('Question is required');
+    }
+    return this.aiAssistantService.streamAnswerQuestion(query, res);
   }
 
   @Get(':id')
