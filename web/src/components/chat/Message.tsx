@@ -1,5 +1,6 @@
 import { Message as MessageType } from "@/types/chat";
 import { UserCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface MessageProps {
   message: MessageType;
@@ -7,6 +8,19 @@ interface MessageProps {
 
 export function Message({ message }: MessageProps) {
   const isUser = message.content.role === "user";
+  const isStreaming = message.content.isStreaming;
+  const [showCursor, setShowCursor] = useState(true);
+
+  // Cursor blinking effect for streaming messages
+  useEffect(() => {
+    if (!isStreaming) return;
+
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 500);
+
+    return () => clearInterval(cursorInterval);
+  }, [isStreaming]);
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
@@ -27,7 +41,17 @@ export function Message({ message }: MessageProps) {
           )}
 
           <div className="flex-1">
-            <div className="whitespace-pre-wrap">{message.content.text}</div>
+            <div className="whitespace-pre-wrap">
+              {message.content.text}
+              {isStreaming && showCursor && (
+                <span className="inline-block w-2 h-4 bg-black ml-0.5 animate-pulse"></span>
+              )}
+            </div>
+            {message.content.documentName && (
+              <div className="mt-2 text-xs text-gray-500">
+                Source: {message.content.documentName}
+              </div>
+            )}
           </div>
 
           {isUser && (
