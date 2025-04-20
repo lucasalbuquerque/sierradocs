@@ -19,7 +19,7 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
   }, [messages]);
 
   return (
-    <div className="space-y-4 mb-4 max-h-[240px] overflow-y-auto">
+    <div className="space-y-4 mb-4 overflow-y-auto">
       {messages.map((message, index) => (
         <MessageComponent key={index} message={message} />
       ))}
