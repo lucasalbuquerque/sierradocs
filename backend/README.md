@@ -275,3 +275,14 @@ npm run test:cov
 - Implement document summarization
 - Add streaming responses for large answers
 - Create document collections for organized search
+
+## Todo
+
+- Implement comprehensive unit testing with Jest
+- Implement queue service using BullMQ for background job processing
+- Add API documentation using Swagger/OpenAPI
+- Set up CI/CD pipeline with GitHub Actions
+- Implement rate limiting for API endpoints
+- Implement caching layer with Redis
+- Set up logging service
+- Set up observability with Signoz/ELK Stack
