@@ -1,73 +1,277 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Sierra Document Assistant Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A powerful NestJS backend for document management, AI-powered search, and question answering built with OpenAI and Pinecone vector database.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Overview
 
-## Description
+Sierra is a document management system that leverages AI to provide natural language search and question answering capabilities. The backend is responsible for:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. **Document Management** - Upload, store, and organize documents
+2. **Document Processing** - Extract text from various file formats (PDF, DOCX, TXT)
+3. **Vector Embeddings** - Convert document text into vector embeddings
+4. **Semantic Search** - Find documents based on meaning, not just keywords
+5. **Question Answering** - Generate answers based on document content
 
-## Installation
+## 📂 Project Structure
 
-```bash
-$ pnpm install
+```
+backend/
+├── src/
+│   ├── app.module.ts         # Main application module
+│   ├── main.ts               # Application entry point
+│   ├── documents/            # Document management module
+│   │   ├── documents.module.ts        # Module definition
+│   │   ├── documents.controller.ts    # API endpoints
+│   │   ├── documents.service.ts       # Business logic
+│   │   ├── document-processing.service.ts  # Document parsing
+│   │   ├── openai.service.ts          # OpenAI integration
+│   │   ├── pinecone.service.ts        # Pinecone vector DB
+│   │   ├── ai-assistant.service.ts    # AI assistant (QA)
+│   │   ├── entities/                  # Database entities
+│   │   │   └── document.entity.ts     # Document model
+│   │   └── dto/                       # Data transfer objects
+│   │       └── document.dto.ts        # Document DTOs
+├── uploads/                  # Document storage
+├── docker-compose.yml        # Docker configuration
+└── Dockerfile                # Backend Dockerfile
 ```
 
-## Running the app
+## 🏗️ Architecture
 
-```bash
-# development
-$ pnpm run start
+Sierra follows a modular architecture based on NestJS's modular design pattern:
 
-# watch mode
-$ pnpm run start:dev
+### Core Components
 
-# production mode
-$ pnpm run start:prod
+1. **API Layer** (`documents.controller.ts`)
+
+   - RESTful endpoints for document operations
+   - File uploads with validation
+   - Search and question answering endpoints
+
+2. **Service Layer** (`documents.service.ts`)
+
+   - Business logic for document management
+   - Database interactions via TypeORM
+   - Orchestrates document processing flow
+
+3. **Processing Layer** (`document-processing.service.ts`)
+
+   - Document parsing and text extraction
+   - Content normalization
+   - Format-specific processing (PDF, DOCX, TXT)
+
+4. **AI Layer**
+
+   - **OpenAI Service** (`openai.service.ts`) - Vector embeddings generation
+   - **Pinecone Service** (`pinecone.service.ts`) - Vector storage and retrieval
+   - **AI Assistant** (`ai-assistant.service.ts`) - Question answering
+
+5. **Data Layer**
+   - PostgreSQL database for document metadata
+   - Pinecone for vector embeddings
+   - File system for document storage
+
+## 🔄 Data Flow
+
+1. **Document Upload**
+
+   - Document uploaded via multipart form
+   - Saved to filesystem in `uploads/` directory
+   - Metadata stored in PostgreSQL database
+   - Processed in background (text extraction)
+   - Converted to vector embeddings
+   - Vectors stored in Pinecone
+
+2. **Document Search**
+
+   - Query text converted to vector embedding
+   - Vector similarity search in Pinecone
+   - Results mapped to full documents
+   - Sorted by relevance score
+
+3. **Question Answering**
+   - Question converted to vector embedding
+   - Relevant documents retrieved from Pinecone
+   - Documents provided as context to OpenAI
+   - AI generates an answer based on document content
+
+## 🛠️ Technical Decisions
+
+### NestJS Framework
+
+- Provides structured architecture with strong typing
+- Built-in dependency injection for testable code
+- Modular design for scalable applications
+
+### PostgreSQL + TypeORM
+
+- Relational database for structured document metadata
+- TypeORM for type-safe database interactions
+- SQL joins for efficient data retrieval
+
+### Pinecone Vector Database
+
+- Specialized for vector similarity search
+- High performance with large embedding sets
+- Real-time updates and queries
+
+### OpenAI Integration
+
+- High-quality embeddings (text-embedding-ada-002)
+- GPT-4o for accurate question answering
+- Structured prompts for context-aware responses
+
+### Document Processing
+
+- Format-specific handlers for different file types
+- Asynchronous processing to avoid blocking requests
+- Chunking strategy for large documents
+
+## 🔌 API Endpoints
+
+### Document Management
+
+#### `POST /documents/upload`
+
+- **Description**: Upload documents (supports multiple files)
+- **Request**: Multipart form with `files` field
+- **Response**: Array of document objects
+
+```json
+[
+  {
+    "id": "uuid",
+    "name": "example.pdf",
+    "size": 12345,
+    "type": "application/pdf",
+    "createdAt": "2023-04-20T14:30:00Z",
+    "isProcessed": false
+  }
+]
 ```
 
-## Test
+#### `GET /documents`
 
-```bash
-# unit tests
-$ pnpm run test
+- **Description**: List all documents
+- **Response**: Array of document objects
 
-# e2e tests
-$ pnpm run test:e2e
+#### `GET /documents/:id`
 
-# test coverage
-$ pnpm run test:cov
+- **Description**: Get document details
+- **Response**: Document object
+
+#### `DELETE /documents/:id`
+
+- **Description**: Delete a document and its vectors
+
+### Search & AI Assistance
+
+#### `GET /documents/search`
+
+- **Description**: Basic keyword search for documents
+- **Query Params**: `query` (search text)
+- **Response**: Array of matching documents
+
+#### `GET /documents/semantic-search`
+
+- **Description**: AI-powered semantic search
+- **Query Params**:
+  - `query` (search text)
+  - `limit` (optional, default: 5)
+- **Response**: Array of search results with relevance
+
+```json
+[
+  {
+    "documentId": "uuid",
+    "documentName": "example.pdf",
+    "content": "Extracted text snippet...",
+    "score": 0.87
+  }
+]
 ```
 
-## Support
+#### `GET /documents/ask`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **Description**: Answer questions based on document content
+- **Query Params**: `query` (question text)
+- **Response**: Answer with source information
 
-## Stay in touch
+```json
+{
+  "documentId": "uuid",
+  "documentName": "example.pdf",
+  "content": "Relevant document content...",
+  "score": 0.92,
+  "answer": "AI-generated answer based on the document..."
+}
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 🔐 Environment Variables
 
-## License
+```
+# Pinecone Configuration
+PINECONE_API_KEY=your-pinecone-api-key
+PINECONE_INDEX=your-pinecone-index-name
 
-Nest is [MIT licensed](LICENSE).
+# OpenAI Configuration
+OPENAI_API_KEY=your-openai-api-key
+
+# Application Configuration
+PORT=4000
+NODE_ENV=development
+
+# PostgreSQL Configuration
+DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
+```
+
+## 🏃‍♂️ Running the Application
+
+### Using Docker
+
+```bash
+# Start all services
+docker-compose up
+
+# Start only backend and database
+docker-compose up backend postgres
+```
+
+### Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start in development mode
+npm run start:dev
+
+# Build production version
+npm run build
+
+# Start production version
+npm run start:prod
+```
+
+## 🧪 Testing
+
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
+
+## 📈 Future Improvements
+
+- Add user authentication and authorization
+- Implement document versioning
+- Support more file formats (PPTX, XLSX, HTML)
+- Add OCR for image-based documents
+- Implement document summarization
+- Add streaming responses for large answers
+- Create document collections for organized search
