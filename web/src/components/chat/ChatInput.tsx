@@ -12,7 +12,7 @@ export function ChatInput({
   isLoading,
 }: ChatInputProps) {
   return (
-    <div className="rounded-lg border-stone-900 border p-4 fixed bottom-5 left-0 right-0 max-w-4xl mx-auto">
+    <div className="rounded-lg border-stone-900 border p-4 fixed bottom-0 left-0 right-0 max-w-4xl mx-auto bg-black">
       <div className="flex items-center gap-2">
         <button className="rounded-lg p-2 text-gray-300 hover:bg-gray-900 cursor-pointer">
           <svg
