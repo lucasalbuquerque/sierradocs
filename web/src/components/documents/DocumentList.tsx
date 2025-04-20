@@ -12,10 +12,7 @@ export function DocumentList({ documents, onDelete }: DocumentListProps) {
     return (
       <div className="bg-white rounded-lg shadow-sm p-12 text-center">
         <File className="mx-auto h-12 w-12 text-gray-300" />
-        <p className="mt-4 text-gray-500 text-lg">No documents uploaded yet</p>
-        <p className="mt-2 text-gray-400 text-sm">
-          Upload documents to get started
-        </p>
+        <p className="mt-4 text-gray-500 text-lg">No documents found</p>
       </div>
     );
   }
