@@ -17,3 +17,12 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Todo
+
+## Todo
+
+- [ ] Implement comprehensive unit testing with Jest
+- [ ] Set up CI/CD pipeline with GitHub Actions
+- [ ] Set up logging service
+- [ ] Set up observability with Signoz/ELK Stack
