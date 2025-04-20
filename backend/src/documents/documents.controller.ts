@@ -12,10 +12,14 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { DocumentsService } from './documents.service';
 import { Document } from './entities/document.entity';
+import { AIAssistantService, AISearchResult } from './ai-assistant.service';
 
 @Controller('documents')
 export class DocumentsController {
-  constructor(private readonly documentsService: DocumentsService) {}
+  constructor(
+    private readonly documentsService: DocumentsService,
+    private readonly aiAssistantService: AIAssistantService,
+  ) {}
 
   @Post('upload')
   @UseInterceptors(FilesInterceptor('files', 10))
@@ -36,6 +40,26 @@ export class DocumentsController {
   @Get('search')
   async searchDocuments(@Query('query') query: string): Promise<Document[]> {
     return this.documentsService.searchDocuments(query);
+  }
+
+  @Get('semantic-search')
+  async semanticSearch(
+    @Query('query') query: string,
+    @Query('limit') limit: string,
+  ): Promise<AISearchResult[]> {
+    if (!query) {
+      throw new BadRequestException('Search query is required');
+    }
+    const topK = limit ? parseInt(limit, 10) : 5;
+    return this.aiAssistantService.semanticSearch(query, topK);
+  }
+
+  @Get('ask')
+  async askQuestion(@Query('query') query: string): Promise<AISearchResult> {
+    if (!query) {
+      throw new BadRequestException('Question is required');
+    }
+    return this.aiAssistantService.answerQuestion(query);
   }
 
   @Get(':id')

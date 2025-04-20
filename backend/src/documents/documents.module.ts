@@ -6,6 +6,7 @@ import { Document } from './entities/document.entity';
 import { PineconeService } from './pinecone.service';
 import { OpenAIService } from './openai.service';
 import { DocumentProcessingService } from './document-processing.service';
+import { AIAssistantService } from './ai-assistant.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Document])],
@@ -15,7 +16,14 @@ import { DocumentProcessingService } from './document-processing.service';
     PineconeService,
     OpenAIService,
     DocumentProcessingService,
+    AIAssistantService,
   ],
-  exports: [DocumentsService],
+  exports: [
+    DocumentsService,
+    PineconeService,
+    OpenAIService,
+    DocumentProcessingService,
+    AIAssistantService,
+  ],
 })
 export class DocumentsModule {}
