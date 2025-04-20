@@ -3,10 +3,10 @@ export interface Document {
   name: string;
   size: number;
   type: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   isProcessed: boolean;
-  processedAt?: string;
+  processedAt?: Date;
 }
 
 export interface AISearchResult {
