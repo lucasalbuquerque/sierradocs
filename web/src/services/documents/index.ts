@@ -1,5 +1,5 @@
 import api from "../api";
-import { Document } from "./types";
+import { AISearchResult, Document } from "./types";
 
 export async function listDocuments(): Promise<Document[]> {
   const response = await api.get<Document[]>("/documents");
@@ -33,9 +33,31 @@ export async function searchDocuments(query: string): Promise<Document[]> {
   return response.data;
 }
 
+export async function semanticSearch(
+  query: string,
+  limit = 5
+): Promise<AISearchResult[]> {
+  const response = await api.get<AISearchResult[]>(
+    "/documents/semantic-search",
+    {
+      params: { query, limit },
+    }
+  );
+  return response.data;
+}
+
+export async function askQuestion(query: string): Promise<AISearchResult> {
+  const response = await api.get<AISearchResult>("/documents/ask", {
+    params: { query },
+  });
+  return response.data;
+}
+
 export const documentsService = {
   upload: uploadDocuments,
   delete: deleteDocument,
   search: searchDocuments,
   list: listDocuments,
+  semanticSearch,
+  askQuestion,
 };
