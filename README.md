@@ -4,7 +4,9 @@ SierraDocs is an enterprise-grade document intelligence platform that helps mode
 
 ## Project Structure
 
-This is a monorepo containing two main components. Please refer to each component's README for detailed setup instructions and documentation:
+**This is a monorepo containing two main components:**
+
+> Please refer to each component's README for detailed setup instructions and documentation.
 
 - [`/web`](./web/README.md) - Frontend application built with [Next.js](https://nextjs.org) ⚡
 - [`/backend`](./backend/README.md) - Backend API service built with [Nest.js](https://nestjs.com) 🪽
