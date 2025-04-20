@@ -6,8 +6,12 @@ SierraDocs is an enterprise-grade document intelligence platform that helps mode
 
 This is a monorepo containing two main components:
 
-- `/web` - Frontend application built with Next.js
-- `/backend` - Backend API service
+- [`/web`](./web/README.md) - Frontend application built with Next.js
+- [`/backend`](./backend/README.md) - Backend API service
+
+## System Design
+
+![System Design](diagram/diagram.png)
 
 ## Features
 
@@ -44,7 +48,7 @@ This is a monorepo containing two main components:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/sierradocs.git
+   git clone https://github.com/lucasalbuquerque/sierradocs.git
    cd sierradocs
    ```
 
